@@ -4,7 +4,7 @@ import './css/SubmitForm.css';
 import { Form, Input, Button, Select } from 'antd';
 require('./Picture');
 
-//直接用label就可以了
+//直接用{this.props.label}就可以了
 
 const { Option } = Select;
 const layout = {

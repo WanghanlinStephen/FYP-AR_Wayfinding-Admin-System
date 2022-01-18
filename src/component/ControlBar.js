@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './css/ControlBar.css';
 import { Steps, Button, message } from 'antd';
+import ListForm from "./ListForm";
 import SubmitForm from "./SubmitForm";
 import DeleteForm from "./DeleteForm";
 
@@ -22,7 +23,10 @@ const steps = [
   },
 ];
 
-const ControlBar = () => {
+const ControlBar = (props) => {
+  const {label} = props;
+  console.log(label);
+
   const [current, setCurrent] = React.useState(0);
 
   const next = () => {
@@ -41,12 +45,14 @@ const ControlBar = () => {
           ))}
         </Steps>
         <div className="steps-content">
-          { current == 0 && steps[current].content}
+          {/* { current == 0 && steps[current].content} */}
+          { current == 0 && 
+              <ListForm label={label}/>}
           { current == 1 && (
-              <SubmitForm />
+              <SubmitForm label={label}/>
           )}
           { current == 2 && (
-              <DeleteForm />
+              <DeleteForm label={label}/>
           )}
         </div>
         <div className="steps-action">

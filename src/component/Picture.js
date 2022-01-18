@@ -1,10 +1,16 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import $ from 'jquery' ;
 import locationIcon from '../img/location.png';
 
+import ControlBar from './ControlBar';
 
 var labels = [];
+
 function Picture(){
+
+  //用setLabel来更新label，否侧无法实现页面状态更新
+  const [label, setLabel] = useState([]);
+
   function handleClick(e) {
     // eslint-disable-next-line no-restricted-globals
     var xPage = (navigator.appName == 'Netscape') ? e.pageX : event.x + document.body.scrollLeft;
@@ -20,7 +26,6 @@ function Picture(){
     // deleteHotspot();
     addHotspot(hotspot);
     displayHotspot();
-
   }
 
   // 添加自定义内容
@@ -34,6 +39,10 @@ function Picture(){
     + y + 'px; left: ' + x + 'px; width: ' + width + 'px; height: ' + height + 'px;  position: absolute; cursor: pointer;"'
     + ')" />';
     labels.push(imgEle);
+    setLabel([...labels]);
+
+    console.log("click:::labels",labels);
+    console.log("click:::state",label);
     // $('.container').append(imgEle);
   }
   // function deleteHotspot() {
@@ -47,9 +56,12 @@ function Picture(){
   }
 
   return (
+    <>
+    <div><ControlBar label={label}/></div>
     <div id="imageId" style={{ width:'100%',height:'100%'}} onClick={handleClick}>
         <img alt="map" src="https://innowings.engg.hku.hk/content/uploads/2020/06/LG.png" style={{width:'100%'}}/>
     </div>
+    </>
   )
 }
 
