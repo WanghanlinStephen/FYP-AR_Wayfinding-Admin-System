@@ -3,29 +3,37 @@ import 'antd/dist/antd.min.css';
 import './css/ControlBar.css';
 import { Steps, Button, message } from 'antd';
 import ListForm from "./ListForm";
-import SubmitForm from "./SubmitForm";
+import SubmitConnectionForm from "./SubmitConnectionForm";
 import DeleteForm from "./DeleteForm";
+import SubmitNodeForm from "./SubmitNodeForm";
 
 const { Step } = Steps;
 
 const steps = [
   {
-    title: 'First Step',
+    title: 'Add Label',
     content: 'Please select labels on the map ',
   },
   {
-    title: 'Second Step',
+    title: 'Connection List',
     content: 'Please determine the relationship',
   },
   {
-    title: 'Last Step',
+    title: 'Add Connection',
+    content: 'Please determine the relationship',
+  },
+  {
+    title: 'Delete Connection',
     content: 'Submit Successfully',
   },
 ];
 
-const ControlBar = (props) => {
-  const {label} = props;
+const ControlBar = (labelProp,connectionProp) => {
+  const {label} = labelProp;
+  const {connection} = connectionProp;
+
   console.log(label);
+  console.log(connection);
 
   const [current, setCurrent] = React.useState(0);
 
@@ -45,13 +53,17 @@ const ControlBar = (props) => {
           ))}
         </Steps>
         <div className="steps-content">
-          {/* { current == 0 && steps[current].content} */}
-          { current == 0 && 
-              <ListForm label={label}/>}
+          { current == 0 && (
+              <SubmitNodeForm label={label}/>
+          )}
           { current == 1 && (
-              <SubmitForm label={label}/>
+              console.log(connection) &&
+              <ListForm connection={connection}/>
           )}
           { current == 2 && (
+              <SubmitConnectionForm label={label}/>
+          )}
+          { current == 3 && (
               <DeleteForm label={label}/>
           )}
         </div>

@@ -22,13 +22,20 @@ const tailLayout = {
   },
 };
 
-class SubmitForm extends React.Component {
+class SubmitNodeForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
+    let coordinate = values['labelID'];
+    coordinate = coordinate.substring(1,coordinate.length-1);
+    let latitude= coordinate.split(',')[0];
+    let longitude= coordinate.split(',')[1];
     var details = {
-      'sourceId': parseInt(values['source']),
-      'destinationId': parseInt(values['destination']),
-      'weight': 3
+      'nameEnglish': values['nameEnglish'],
+      'nameChinese': values['nameChinese'],
+      'nameTraditionalChinese': values['nameChinese'],
+      'latitude': latitude,
+      'longitude': longitude,
+      'intersectionalAngle':values['intersectionalAngle'],
     };
 
     let formBody = [];
@@ -45,7 +52,7 @@ class SubmitForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/add/connection`, requestOptions)
+    fetch( `http://localhost:3000/v1/admin/add/node`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");
@@ -58,22 +65,15 @@ class SubmitForm extends React.Component {
   onReset = () => {
     this.formRef.current.resetFields();
   };
-  onFill = () => {
-    this.formRef.current.setFieldsValue({
-      note: 'Hello world!',
-      gender: 'male',
-    });
-  };
   labels=["1","2","3"];
-
 
 
   render() {
     return (
         <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
           <Form.Item
-              name="source"
-              label="Source"
+              name="labelID"
+              label="labelID"
               rules={[
                 {
                   required: true,
@@ -82,28 +82,47 @@ class SubmitForm extends React.Component {
           >
             <Select
                 placeholder="Select a option and change input text above"
-                id="source"
+                id="labelID"
                 allowClear
-                options={this.labels.map(a=>({ value: a, label: a}))}
+                options={this.props.label.map(a=>({ value: a, label: a}))}
             >
             </Select>
           </Form.Item>
           <Form.Item
-              name="destination"
-              label="Destination"
+              label="nameEnglish"
+              name="nameEnglish"
               rules={[
                 {
                   required: true,
+                  message: 'Please input your nameEnglish!',
                 },
               ]}
           >
-            <Select
-                placeholder="Select a option and change input text above"
-                id="destination"
-                allowClear
-                options={this.labels.map(a=>({ value: a, label: a}))}
-            >
-            </Select>
+            <Input />
+          </Form.Item>
+          <Form.Item
+              label="nameChinese"
+              name="nameChinese"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your nameChinese!',
+                },
+              ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+              label="intersectionalAngle"
+              name="intersectionalAngle"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your intersectionalAngle!',
+                },
+              ]}
+          >
+            <Input />
           </Form.Item>
           <Form.Item
               noStyle
@@ -132,15 +151,9 @@ class SubmitForm extends React.Component {
             <Button htmlType="button" onClick={this.onReset}>
               Reset
             </Button>
-            <Button type="link" htmlType="button" onClick={this.onFill}>
-              Fill form
-            </Button>
-            <Button htmlType="set" onClick={this.onSet}>
-              Set
-            </Button>
           </Form.Item>
         </Form>
     );
   }
 }
-export default SubmitForm;
+export default SubmitNodeForm;

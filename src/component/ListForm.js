@@ -3,13 +3,13 @@ import { List } from 'antd';
 
 
 const ListForm = (props) => {
-  const {label} = props;
+  const {connection} = props;
 
   return (
     <>
     <List
     itemLayout="vertical"
-    dataSource={label}
+    dataSource={connection}
     renderItem={item => (
       <List.Item>
         {item}

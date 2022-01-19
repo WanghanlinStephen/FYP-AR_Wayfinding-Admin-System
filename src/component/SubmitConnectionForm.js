@@ -22,11 +22,13 @@ const tailLayout = {
   },
 };
 
-class DeleteForm extends React.Component {
+class SubmitConnectionForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
     var details = {
-      'Id': parseInt(values['labelId']),
+      'sourceId': parseInt(values['source']),
+      'destinationId': parseInt(values['destination']),
+      'weight': 3
     };
 
     let formBody = [];
@@ -43,7 +45,7 @@ class DeleteForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/delete/both`, requestOptions)
+    fetch( `http://localhost:3000/v1/admin/add/connection`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");
@@ -70,8 +72,8 @@ class DeleteForm extends React.Component {
     return (
         <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
           <Form.Item
-              name="labelId"
-              label="labelId"
+              name="source"
+              label="Source"
               rules={[
                 {
                   required: true,
@@ -80,9 +82,26 @@ class DeleteForm extends React.Component {
           >
             <Select
                 placeholder="Select a option and change input text above"
-                id="labelId"
+                id="source"
                 allowClear
-                options={this.labels.map(a=>({ value: a, label: a}))}
+                options={this.props.label.map(a=>({ value: a, label: a}))}
+            >
+            </Select>
+          </Form.Item>
+          <Form.Item
+              name="destination"
+              label="Destination"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+          >
+            <Select
+                placeholder="Select a option and change input text above"
+                id="destination"
+                allowClear
+                options={this.props.label.map(a=>({ value: a, label: a}))}
             >
             </Select>
           </Form.Item>
@@ -118,4 +137,4 @@ class DeleteForm extends React.Component {
     );
   }
 }
-export default DeleteForm;
+export default SubmitConnectionForm;
