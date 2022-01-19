@@ -28,9 +28,8 @@ const steps = [
   },
 ];
 
-const ControlBar = (labelProp,connectionProp) => {
-  const {label} = labelProp;
-  const {connection} = connectionProp;
+const ControlBar = (props) => {
+  const {label,connection} = props;
 
   console.log(label);
   console.log(connection);
@@ -57,7 +56,6 @@ const ControlBar = (labelProp,connectionProp) => {
               <SubmitNodeForm label={label}/>
           )}
           { current == 1 && (
-              console.log(connection) &&
               <ListForm connection={connection}/>
           )}
           { current == 2 && (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { List } from 'antd';
 
-
+//fixme:
 const ListForm = (props) => {
   const {connection} = props;
-
+  console.log(connection);
   return (
     <>
     <List
@@ -12,7 +12,7 @@ const ListForm = (props) => {
     dataSource={connection}
     renderItem={item => (
       <List.Item>
-        {item}
+        {item['NameEnglish']}
       </List.Item>
     )}
     />
