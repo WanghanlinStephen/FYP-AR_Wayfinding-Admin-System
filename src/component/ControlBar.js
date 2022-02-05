@@ -15,16 +15,12 @@ const steps = [
     content: 'Please select labels on the map ',
   },
   {
-    title: 'Connection List',
-    content: 'Please determine the relationship',
-  },
-  {
     title: 'Add Connection',
     content: 'Please determine the relationship',
   },
   {
-    title: 'Delete Connection',
-    content: 'Submit Successfully',
+    title: 'Delete Node',
+    content: 'Delete Successfully',
   },
 ];
 
@@ -56,12 +52,9 @@ const ControlBar = (props) => {
               <SubmitNodeForm label={label}/>
           )}
           { current == 1 && (
-              <ListForm connection={connection}/>
-          )}
-          { current == 2 && (
               <SubmitConnectionForm label={label}/>
           )}
-          { current == 3 && (
+          { current == 2 && (
               <DeleteForm label={label}/>
           )}
         </div>

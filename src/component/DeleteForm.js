@@ -25,8 +25,13 @@ const tailLayout = {
 class DeleteForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
+    var node = values['nodeId'].substring(1,values['nodeId'].length-1);
+    let nodeLatitude= node.split(',')[0];
+    let nodeLongitude= node.split(',')[1];
+
     var details = {
-      'Id': parseInt(values['labelId']),
+      'nodeLatitude': parseFloat(nodeLatitude),
+      'nodeLongitude':parseFloat(nodeLongitude),
     };
 
     let formBody = [];
@@ -70,8 +75,8 @@ class DeleteForm extends React.Component {
     return (
         <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
           <Form.Item
-              name="labelId"
-              label="labelId"
+              name="nodeId"
+              label="nodeId"
               rules={[
                 {
                   required: true,
@@ -80,9 +85,9 @@ class DeleteForm extends React.Component {
           >
             <Select
                 placeholder="Select a option and change input text above"
-                id="labelId"
+                id="nodeId"
                 allowClear
-                options={this.labels.map(a=>({ value: a, label: a}))}
+                options={this.props.label.map(a=>({ value: a, label: a}))}
             >
             </Select>
           </Form.Item>

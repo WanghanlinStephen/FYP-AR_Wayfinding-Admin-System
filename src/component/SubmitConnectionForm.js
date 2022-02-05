@@ -25,9 +25,18 @@ const tailLayout = {
 class SubmitConnectionForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
+    console.log(values);
+    var source = values['source'].substring(1,values['source'].length-1);
+    var destination = values['destination'].substring(1,values['destination'].length-1);
+    let sourceLatitude= source.split(',')[0];
+    let sourceLongitude= source.split(',')[1];
+    let destinationLatitude= destination.split(',')[0];
+    let destinationLongitude= destination.split(',')[1];
     var details = {
-      'sourceId': parseInt(values['source']),
-      'destinationId': parseInt(values['destination']),
+      'sourceLatitude': parseFloat(sourceLatitude),
+      'sourceLongitude':parseFloat(sourceLongitude),
+      'destinationLatitude': parseFloat(destinationLatitude),
+      'destinationLongitude':parseFloat(destinationLongitude),
       'weight': 3
     };
 
@@ -38,7 +47,7 @@ class SubmitConnectionForm extends React.Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-
+    console.log(formBody);
     const requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
@@ -64,7 +73,22 @@ class SubmitConnectionForm extends React.Component {
       gender: 'male',
     });
   };
-  labels=["1","2","3"];
+  // getNodeId = (latitudeValue,longitudeValue) => {
+  //   console.log(latitudeValue);
+  //   console.log(longitudeValue);
+  //   const data = {latitude:latitudeValue, longitude:longitudeValue};
+  //   fetch(`http://localhost:3000/v1/admin/index/nodeId/?latitude=${encodeURIComponent(data.latitude)}&longitude=${encodeURIComponent(data.longitude)}`, {
+  //     method: "GET",
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     console.log(data);
+  //     console.log("Success");
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error fetching data: ", error);
+  //   })
+  // };
 
 
 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style lang="">
+  .point {
+    position: absolute;
+    border: 5px solid red;
+  }
+</style>
+<body>
+<button id="myBtn">创建连线</button>
+<div class="point" style="top:342px;left:513px"></div>
+<div class="point" style="top:450px;left:468px"></div>
+<div
+    style="position:absolute;border-top: 1px solid red;width:117px;top:342px;left:513px;transform:rotate(112.61986494804043deg);transform-origin: 0 50%;"
+></div>
+</body>
+<script>
+  document.getElementById("myBtn").onclick = function (e) {
+    e.stopPropagation();
+    document.addEventListener("click", createLine, false);
+  };
+
+  function createLine() {
+    let firstPoint = null;
+    let secondPoint = null;
+
+    // 创建节点
+    function createPoints() {
+      if (firstPoint === null) {
+        firstPoint = {};
+        firstPoint.xPoint = 12;
+        firstPoint.YPoint = 23;
+      } else {
+        secondPoint = {};
+        secondPoint.xPoint = 534;
+        secondPoint.YPoint = 660;
+      }
+
+
+      if (firstPoint !== null && secondPoint !== null) {
+        let lineLength = calcLine(firstPoint, secondPoint);
+        let angle = getAngle(
+            firstPoint.xPoint,
+            firstPoint.YPoint,
+            secondPoint.xPoint,
+            secondPoint.YPoint
+        );
+        // 设置一个div 宽度为 两点之间的距离，并且以 transform-origin: 0 50% 为圆心旋转，角度已经算出来
+        let lineHtmlStr = `<div style="position:absolute;border-top: 1px solid red;width:${lineLength}px;top:${firstPoint.YPoint}px;left:${firstPoint.xPoint}px;transform:rotate(${angle}deg);transform-origin: 0 50%;"></div>`;
+        let bodyDiv = document.getElementsByTagName("body")[0];
+        // 添加到body 后面
+        bodyDiv.innerHTML = bodyDiv.innerHTML + lineHtmlStr;
+        //   bodyDiv.appendChild(lineHtml);
+        document.removeEventListener("click", createPoints);
+      }
+    }
+
+    // 计算连线
+    function calcLine(firstPoint, secondPoint) {
+      // 计算出两个点之间的距离
+      let line = Math.sqrt(
+          Math.pow(firstPoint.xPoint - secondPoint.xPoint, 2) +
+          Math.pow(firstPoint.YPoint - secondPoint.YPoint, 2)
+      );
+      return line;
+    }
+
+    // 计算角度
+    // 获得人物中心和鼠标坐标连线，与y轴正半轴之间的夹角
+    function getAngle(x1, y1, x2, y2) {
+      // 获得人物中心和鼠标坐标连线，与y轴正半轴之间的夹角
+      var x = x1 - x2;
+      var y = y1 - y2;
+      var z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+      var cos = y / z;
+      var radina = Math.acos(cos); // 用反三角函数求弧度
+      var angle = 180 / (Math.PI / radina); // 将弧度转换成角度
+      if (x2 > x1 && y2 === y1) {
+        // 在x轴正方向上
+        angle = 0;
+      }
+      if (x2 > x1 && y2 < y1) {
+        // 在第一象限;
+        angle = angle - 90;
+      }
+      if (x2 === x1 && y1 > y2) {
+        // 在y轴正方向上
+        angle = -90;
+      }
+      if (x2 < x1 && y2 < y1) {
+        // 在第二象限
+        angle = 270 - angle;
+      }
+      if (x2 < x1 && y2 === y1) {
+        // 在x轴负方向
+        angle = 180;
+      }
+      if (x2 < x1 && y2 > y1) {
+        // 在第三象限
+        angle = 270 - angle;
+      }
+      if (x2 === x1 && y2 > y1) {
+        // 在y轴负方向上
+        angle = 90;
+      }
+      if (x2 > x1 && y2 > y1) {
+        // 在四象限
+        angle = angle - 90;
+      }
+      return angle;
+    }
+
+    // 解决第一次绑定的时候执行方法
+    //   setTimeout(function() {
+    document.removeEventListener("click", createPoints);
+    // 添加节点
+    document.addEventListener("click", createPoints, false);
+    //   }, 0);
+  }
+</script>
+</html>
+

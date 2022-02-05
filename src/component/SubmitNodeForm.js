@@ -37,6 +37,7 @@ class SubmitNodeForm extends React.Component {
       'longitude': longitude,
       'intersectionalAngle':values['intersectionalAngle'],
     };
+    console.log(details);
 
     let formBody = [];
     for (let property in details) {

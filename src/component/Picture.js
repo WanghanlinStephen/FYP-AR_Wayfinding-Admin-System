@@ -41,6 +41,7 @@ function Picture(){
     var displaySpot = {x: imgSpot.x+img_x, y: imgEl.offsetHeight-imgSpot.y+img_y};
     addHotspot(displaySpot,imgSpot,true);
   }
+
   function onFetchConnection() {
     fetchInitialConnections();
   }
@@ -52,6 +53,8 @@ function Picture(){
 
       let connectionList = data['data']['Connections'];
       for (let connection in connectionList){
+        //draw initial connections
+        createPoints(connectionList[connection].Source,connectionList[connection].Destination);
         if (connectionsMap.has(connectionList[connection].Source)){
           connectionsMap.set(connectionList[connection].Source,connectionsMap.get(connectionList[connection].Source).push(connectionList[connection].Destination));
         }else{
@@ -59,12 +62,115 @@ function Picture(){
         }
       }
       setConnectionMap(connectionsMap);
-      console.log(connectionMap);
     })
     .catch((error) => {
       console.error("Error fetching data: ", error);
     })
   }
+
+  function createPoints(source,destination) {
+    let firstPoint = null;
+    let secondPoint = null;
+    let imgEl = document.getElementById("imageId");
+    let img_x = locationLeft(imgEl);
+    let img_y = locationTop(imgEl);
+    if (firstPoint === null) {
+      firstPoint = {};
+      firstPoint.xPoint = source['Latitude']+img_x;
+      firstPoint.YPoint = imgEl.offsetHeight-source['Longitude']+img_y;
+    }
+    if (secondPoint === null) {
+      secondPoint = {};
+      secondPoint.xPoint = destination['Latitude']+img_x;
+      secondPoint.YPoint = imgEl.offsetHeight-destination['Longitude']+img_y;
+    }
+
+    if (firstPoint !== null && secondPoint !== null) {
+      let lineLength = calcLine(firstPoint, secondPoint);
+      let angle = getAngle(
+          firstPoint.xPoint,
+          firstPoint.YPoint,
+          secondPoint.xPoint,
+          secondPoint.YPoint
+      );
+      // 设置一个div 宽度为 两点之间的距离，并且以 transform-origin: 0 50% 为圆心旋转，角度已经算出来
+      let lineHtmlStr = `<div style="position:absolute;border-top: 1px solid red;width:${lineLength}px;top:${firstPoint.YPoint}px;left:${firstPoint.xPoint}px;transform:rotate(${angle}deg);transform-origin: 0 50%;"></div>`;
+      $('.container').append(lineHtmlStr);
+    }
+  }
+  function calcLine(firstPoint, secondPoint) {
+    // 计算出两个点之间的距离
+    let line = Math.sqrt(
+        Math.pow(firstPoint.xPoint - secondPoint.xPoint, 2) +
+        Math.pow(firstPoint.YPoint - secondPoint.YPoint, 2)
+    );
+    return line;
+  }
+  function getAngle(x1, y1, x2, y2) {
+    // 获得人物中心和鼠标坐标连线，与y轴正半轴之间的夹角
+    var x = x1 - x2;
+    var y = y1 - y2;
+    var z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    var cos = y / z;
+    var radina = Math.acos(cos); // 用反三角函数求弧度
+    var angle = 180 / (Math.PI / radina); // 将弧度转换成角度
+    if (x2 > x1 && y2 === y1) {
+      // 在x轴正方向上
+      angle = 0;
+    }
+    if (x2 > x1 && y2 < y1) {
+      // 在第一象限;
+      angle = angle - 90;
+    }
+    if (x2 === x1 && y1 > y2) {
+      // 在y轴正方向上
+      angle = -90;
+    }
+    if (x2 < x1 && y2 < y1) {
+      // 在第二象限
+      angle = 270 - angle;
+    }
+    if (x2 < x1 && y2 === y1) {
+      // 在x轴负方向
+      angle = 180;
+    }
+    if (x2 < x1 && y2 > y1) {
+      // 在第三象限
+      angle = 270 - angle;
+    }
+    if (x2 === x1 && y2 > y1) {
+      // 在y轴负方向上
+      angle = 90;
+    }
+    if (x2 > x1 && y2 > y1) {
+      // 在四象限
+      angle = angle - 90;
+    }
+    return angle;
+  }
+  function createLine(source,destination) {
+
+
+    // 创建节点
+
+
+    // 计算连线
+
+
+    // 计算角度
+    // 获得人物中心和鼠标坐标连线，与y轴正半轴之间的夹角
+
+    // 解决第一次绑定的时候执行方法
+    //   setTimeout(function() {
+    document.removeEventListener("click", createPoints);
+    // 添加节点
+    document.addEventListener("click", createPoints, false);
+    //   }, 0);
+  }
+
+
+
+
 
   function handleClick(e) {
     // eslint-disable-next-line no-restricted-globals
