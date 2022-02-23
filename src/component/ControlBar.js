@@ -4,8 +4,10 @@ import './css/ControlBar.css';
 import { Steps, Button, message } from 'antd';
 import ListForm from "./ListForm";
 import SubmitConnectionForm from "./SubmitConnectionForm";
-import DeleteForm from "./DeleteForm";
+import DeleteForm from "./DeleteNodeForm";
 import SubmitNodeForm from "./SubmitNodeForm";
+import DeleteNodeForm from "./DeleteNodeForm";
+import DeleteConnectionForm from "./DeleteConnectionForm";
 
 const { Step } = Steps;
 
@@ -20,6 +22,10 @@ const steps = [
   },
   {
     title: 'Delete Node',
+    content: 'Delete Successfully',
+  },
+  {
+    title: 'Delete Connection',
     content: 'Delete Successfully',
   },
 ];
@@ -55,7 +61,10 @@ const ControlBar = (props) => {
               <SubmitConnectionForm label={label}/>
           )}
           { current == 2 && (
-              <DeleteForm label={label}/>
+              <DeleteNodeForm label={label}/>
+          )}
+          { current == 3 && (
+              <DeleteConnectionForm label={label}/>
           )}
         </div>
         <div className="steps-action">

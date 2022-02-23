@@ -22,16 +22,20 @@ const tailLayout = {
   },
 };
 
-class DeleteForm extends React.Component {
+class DeleteConnectionForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
-    var node = values['nodeId'].substring(1,values['nodeId'].length-1);
-    let nodeLatitude= node.split(',')[0];
-    let nodeLongitude= node.split(',')[1];
-
+    var source = values['source'].substring(1,values['source'].length-1);
+    var destination = values['destination'].substring(1,values['destination'].length-1);
+    let sourceLatitude= source.split(',')[0];
+    let sourceLongitude= source.split(',')[1];
+    let destinationLatitude= destination.split(',')[0];
+    let destinationLongitude= destination.split(',')[1];
     var details = {
-      'nodeLatitude': parseFloat(nodeLatitude),
-      'nodeLongitude':parseFloat(nodeLongitude),
+      'sourceLatitude': parseFloat(sourceLatitude),
+      'sourceLongitude':parseFloat(sourceLongitude),
+      'destinationLatitude': parseFloat(destinationLatitude),
+      'destinationLongitude':parseFloat(destinationLongitude),
     };
 
     let formBody = [];
@@ -48,7 +52,7 @@ class DeleteForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/delete/both`, requestOptions)
+    fetch( `http://localhost:3000/v1/admin/delete/connection`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");
@@ -67,7 +71,6 @@ class DeleteForm extends React.Component {
       gender: 'male',
     });
   };
-  labels=["1","2","3"];
 
 
 
@@ -75,8 +78,8 @@ class DeleteForm extends React.Component {
     return (
         <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
           <Form.Item
-              name="nodeId"
-              label="nodeId"
+              name="source"
+              label="Source"
               rules={[
                 {
                   required: true,
@@ -85,7 +88,24 @@ class DeleteForm extends React.Component {
           >
             <Select
                 placeholder="Select a option and change input text above"
-                id="nodeId"
+                id="source"
+                allowClear
+                options={this.props.label.map(a=>({ value: a, label: a}))}
+            >
+            </Select>
+          </Form.Item>
+          <Form.Item
+              name="destination"
+              label="Destination"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+          >
+            <Select
+                placeholder="Select a option and change input text above"
+                id="destination"
                 allowClear
                 options={this.props.label.map(a=>({ value: a, label: a}))}
             >
@@ -120,7 +140,8 @@ class DeleteForm extends React.Component {
             </Button>
           </Form.Item>
         </Form>
+
     );
   }
 }
-export default DeleteForm;
+export default DeleteConnectionForm;
