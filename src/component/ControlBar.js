@@ -8,6 +8,7 @@ import DeleteForm from "./DeleteNodeForm";
 import SubmitNodeForm from "./SubmitNodeForm";
 import DeleteNodeForm from "./DeleteNodeForm";
 import DeleteConnectionForm from "./DeleteConnectionForm";
+import CreateQRCode from "./CreateQRCode";
 
 const { Step } = Steps;
 
@@ -28,6 +29,11 @@ const steps = [
     title: 'Delete Connection',
     content: 'Delete Successfully',
   },
+  {
+    title: 'Create QR Code',
+    content: 'Create Successfully',
+  },
+
 ];
 
 const ControlBar = (props) => {
@@ -65,6 +71,9 @@ const ControlBar = (props) => {
           )}
           { current == 3 && (
               <DeleteConnectionForm label={label}/>
+          )}
+          { current == 4 && (
+              <CreateQRCode label={label}/>
           )}
         </div>
         <div className="steps-action">

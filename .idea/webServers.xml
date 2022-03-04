@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6c672847-9374-47e8-8344-71f20467a096" name="fyp21043" url="https://fyp21043s1.cs.hku.hk">
+        <fileTransfer rootFolder="/home/fyp21043/FYP/System" accessType="SFTP" host="fyp21043s1.cs.hku.hk" port="22" sshConfigId="5335d424-7e10-4e6b-8d55-61cda7cf7cc0" sshConfig="fyp21043@fyp21043s1.cs.hku.hk:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

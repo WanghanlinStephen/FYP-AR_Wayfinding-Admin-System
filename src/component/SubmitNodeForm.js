@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './css/SubmitForm.css';
 import { Form, Input, Button, Select } from 'antd';
+import {ContainerFilled} from "@ant-design/icons";
 require('./Picture');
 
 //直接用{this.props.label}就可以了
@@ -66,7 +67,6 @@ class SubmitNodeForm extends React.Component {
   onReset = () => {
     this.formRef.current.resetFields();
   };
-  labels=["1","2","3"];
 
 
   render() {
