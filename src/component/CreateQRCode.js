@@ -2,7 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './css/SubmitForm.css';
 import QRCode from 'qrcode.react';
-import { Form, Input, Button, Select } from 'antd';
+import { Modal, Form, Input, Button, Select } from 'antd';
 import {ContainerFilled} from "@ant-design/icons";
 require('./Picture');
 
@@ -25,6 +25,13 @@ const tailLayout = {
 };
 
 class CreateQRCode extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      labelID: 0,
+      isModalVisible: false};
+  }
+
   formRef = React.createRef();
   onFinish = (values) => {
     // let coordinate = values['labelID'];
@@ -89,6 +96,14 @@ class CreateQRCode extends React.Component {
     this.formRef.current.resetFields();
   };
 
+  showModal = () => {
+    this.setState({isModalVisible: true});
+  };
+
+  handleOk = () => {
+    this.setState({isModalVisible: false});
+  };
+
 
   render() {
     return (
@@ -107,42 +122,41 @@ class CreateQRCode extends React.Component {
                   placeholder="Select a option and change input text above"
                   id="labelID"
                   allowClear
-                  options={this.props.label.map(a=>({ value: a, label: a}))}
+                  options={this.props.label.map((a , index)=>({ value: index, label: a}))}
+                  onChange={(e)=>{
+                    this.setState({labelID: e})}}
               >
+                {/* options之后改为数据库数据 value为数据id label为坐标 */}
               </Select>
             </Form.Item>
-            <Form.Item
-                noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
-            >
-              {({ getFieldValue }) =>
-                  getFieldValue('gender') === 'other' ? (
-                      <Form.Item
-                          name="customizeGender"
-                          label="Customize Gender"
-                          rules={[
-                            {
-                              required: true,
-                            },
-                          ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                  ) : null
-              }
-            </Form.Item>
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button type="primary" onClick={this.showModal}>
+                Generate QR code
               </Button>
               <Button htmlType="button" onClick={this.onReset}>
                 Reset
               </Button>
             </Form.Item>
+            <Form.Item>
+              <div id="QRContainer">
+              </div>
+            </Form.Item>
           </Form>
-          <div id="Container">
-
-          </div>
+          {/* 弹窗 */}
+          <Modal visible={this.state.isModalVisible} onOk={this.handleOk}>
+          <QRCode
+              id="QR"
+              value={'https://fyp21043s1.cs.hku.hk:8443/home/'+this.state.labelID} //link
+              size={300} // 二维码的大小
+              fgColor="#000000" // 二维码的颜色
+              imageSettings={{ // 中间有图片logo
+                src: "https://stemkoski.github.io/AR-Examples/markers/hiro.png",
+                height: 60,
+                width: 60,
+                excavate: true
+              }}
+          />
+          </Modal>
         </div>
     );
   }
