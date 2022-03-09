@@ -20,7 +20,8 @@ function Picture(){
   }
   //initialize fetch
   function fetchInitialLabels(){
-    fetch( `http://localhost:3000/v1/api/nodes`)
+    //http://localhost:3000/v1/api/nodes
+    fetch( `fyp21043s1.cs.hku.hk:8080/v1/api/nodes`)
     .then(res => res.json())
     .then(data => {
       let nodes = data['data']['Nodes'];
@@ -47,7 +48,9 @@ function Picture(){
   }
 
   function fetchInitialConnections() {
-    fetch( `http://localhost:3000/v1/api/connections`)
+    //https://fyp21043s1.cs.hku.hk:8080/v1/api/connections
+    //http://localhost:3000/v1/api/connections
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/connections`)
     .then(res => res.json())
     .then(data => {
 

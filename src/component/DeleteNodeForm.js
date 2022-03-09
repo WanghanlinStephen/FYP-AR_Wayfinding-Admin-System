@@ -48,7 +48,9 @@ class DeleteNodeForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/delete/both`, requestOptions)
+    // https://fyp21043s1.cs.hku.hk:8080/v1/admin/delete/both
+    // http://localhost:3000/v1/admin/delete/both
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/delete/both`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");

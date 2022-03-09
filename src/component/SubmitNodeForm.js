@@ -54,7 +54,9 @@ class SubmitNodeForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/add/node`, requestOptions)
+    // http://localhost:3000/v1/admin/add/node
+    // https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/node
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/node`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");

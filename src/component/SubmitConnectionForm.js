@@ -54,7 +54,9 @@ class SubmitConnectionForm extends React.Component {
       body: formBody
     }
     // 数据库
-    fetch( `http://localhost:3000/v1/admin/add/connection`, requestOptions)
+    // https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/connection
+    // http://localhost:3000/v1/admin/add/connection
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/connection`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");
