@@ -26,16 +26,21 @@ const tailLayout = {
 class SubmitNodeForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
+    let imgEl = document.getElementById("imageId");
+    let width = imgEl.offsetWidth
+    let height = imgEl.offsetHeight
     let coordinate = values['labelID'];
     coordinate = coordinate.substring(1,coordinate.length-1);
     let latitude= coordinate.split(',')[0];
     let longitude= coordinate.split(',')[1];
+    let relativeLatitude = parseInt(latitude, 10) / width
+    let relativeLongitude = parseInt(longitude, 10) / height
     var details = {
       'nameEnglish': values['nameEnglish'],
       'nameChinese': values['nameChinese'],
       'nameTraditionalChinese': values['nameChinese'],
-      'latitude': latitude,
-      'longitude': longitude,
+      'latitude':  relativeLatitude,
+      'longitude': relativeLongitude,
       'intersectionalAngle':values['intersectionalAngle'],
     };
     console.log(details);

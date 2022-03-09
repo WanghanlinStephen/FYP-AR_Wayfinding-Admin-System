@@ -16,18 +16,22 @@ function Picture(){
 
   function onFetchLabel() {
     fetchInitialLabels();
-    drawInitialLabels();
+    // drawInitialLabels();
   }
   //initialize fetch
   function fetchInitialLabels(){
     //http://localhost:3000/v1/api/nodes
-    fetch( `fyp21043s1.cs.hku.hk:8080/v1/api/nodes`)
+    //https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes`)
     .then(res => res.json())
     .then(data => {
       let nodes = data['data']['Nodes'];
       for (let label in nodes){
-        let imgSpot = {x: nodes[label].Latitude, y:nodes[label].Longitude}
-        drawInitialLabels(imgSpot);
+        let imgEl = document.getElementById("imageId");
+        let width = imgEl.offsetWidth
+        let height = imgEl.offsetHeight
+        let imgSpot = {x: Math.floor(nodes[label].Latitude*width), y:Math.floor(nodes[label].Longitude*height)}
+        drawInitialLabels(imgSpot,imgEl);
       }
     })
     .catch((error) => {
@@ -35,8 +39,7 @@ function Picture(){
     })
   }
 
-  function drawInitialLabels(imgSpot) {
-    let imgEl = document.getElementById("imageId");
+  function drawInitialLabels(imgSpot,imgEl) {
     let img_x = locationLeft(imgEl);
     let img_y = locationTop(imgEl);
     var displaySpot = {x: imgSpot.x+img_x, y: imgEl.offsetHeight-imgSpot.y+img_y};
@@ -77,15 +80,17 @@ function Picture(){
     let imgEl = document.getElementById("imageId");
     let img_x = locationLeft(imgEl);
     let img_y = locationTop(imgEl);
+    let width = imgEl.offsetWidth
+    let height = imgEl.offsetHeight
     if (firstPoint === null) {
       firstPoint = {};
-      firstPoint.xPoint = source['Latitude']+img_x;
-      firstPoint.YPoint = imgEl.offsetHeight-source['Longitude']+img_y;
+      firstPoint.xPoint = source['Latitude']*width+img_x;
+      firstPoint.YPoint = imgEl.offsetHeight-source['Longitude']*height+img_y;
     }
     if (secondPoint === null) {
       secondPoint = {};
-      secondPoint.xPoint = destination['Latitude']+img_x;
-      secondPoint.YPoint = imgEl.offsetHeight-destination['Longitude']+img_y;
+      secondPoint.xPoint = destination['Latitude']*width+img_x;
+      secondPoint.YPoint = imgEl.offsetHeight-destination['Longitude']*height+img_y;
     }
 
     if (firstPoint !== null && secondPoint !== null) {
@@ -184,8 +189,6 @@ function Picture(){
     var displaySpot = {x: xPage, y: yPage};
 
     let imgEl = document.getElementById("imageId");
-    let height = $('imageId').prop("height")
-    console.log(imgEl.offsetHeight);
 
     let img_x = locationLeft(imgEl);
     let img_y = locationTop(imgEl);
