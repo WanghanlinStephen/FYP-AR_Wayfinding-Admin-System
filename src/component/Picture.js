@@ -3,7 +3,7 @@ import $ from 'jquery' ;
 import locationIcon from '../img/location.png';
 import locationIconNew from '../img/locationNew.png'
 import ControlBar from './ControlBar';
-import {Button , Select} from "antd";
+import {Button , Cascader, Select} from "antd";
 
 var labels = [];
 var connectionsMap = new Map();
@@ -13,34 +13,41 @@ function Picture(){
   //用setLabel来更新label，否侧无法实现页面状态更新
   const [label, setLabel] = useState([]);
   const [url, setUrl] = useState('');
-  const [maps, setMaps] = useState([]);
+  const [options, setOptions] = useState([]);
   const [connectionMap, setConnectionMap] = useState(new Map());
 
   function fetchInitialMaps(){
-    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/all`)
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/name`)
     .then(res => res.json())
     .then(data => {
-      let map = data['data']['Maps'];
-      setMaps(map);
+      let op = data['data']['Names'];
+      let ops = op.map((option, index)=>({ value: index, label: option}));
+      setOptions(ops);
     })
     .catch((error) => {
       console.error("Error fetching data: ", error);
     })
+    console.log("inital")
   }
 
-  fetchInitialMaps();
-  fetchMaps(1);
-
-  function fetchMaps(value){
-    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter?id=${value}`)
-    .then(res => res.json())
-    .then(data => {
-      let link = data['data']['Map']['Url'];
+  function fetchMaps(value,selectedOptions){
+    // fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter?id=${value}`)
+    // .then(res => res.json())
+    // .then(data => {
+    //   let link = data['data']['Map']['Url'];
+    //   setUrl(link);
+    // })
+    // .catch((error) => {
+    //   console.error("Error fetching data: ", error);
+    // })
+    console.log('value change:::',value)
+    if(value.length == 1){
+      loadData(selectedOptions);
+    }
+    else{
+      let link = value[1];
       setUrl(link);
-    })
-    .catch((error) => {
-      console.error("Error fetching data: ", error);
-    })
+    }
   }
 
   function onFetchLabel() {
@@ -285,6 +292,33 @@ function Picture(){
     setLabel([...labels]);
   }
 
+
+  //待调试
+  function loadData(selectedOptions){
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+
+    setTimeout(() => {
+      targetOption.loading = false;
+      fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/name?name=${targetOption.label}`)
+      .then(res => res.json())
+      .then(data => {
+        let maps = data['data']['Map'];
+        targetOption.children = maps.map(map=>({ value: map['Url'], label: 'Floor '+map['Floor']}))
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      })
+      console.log('loaddata::::',options)
+      setOptions([...options]);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    fetchInitialMaps();
+  },[]);
+  
+
   return (
     <>
     <Button  htmlType="button" onClick={onFetchLabel}>
@@ -294,8 +328,14 @@ function Picture(){
       Fetch Previous Connections
     </Button>
 
-
-    <Select
+    <Cascader
+      placeholder="Select a map"
+      options={options}
+      onChange={fetchMaps} 
+      changeOnSelect
+    />
+      
+    {/* <Select
       showSearch
       placeholder="Select a map"
       optionFilterProp="children"
@@ -304,7 +344,7 @@ function Picture(){
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
       options={maps.map(map=>({ value: map['Id'], label: 'Floor '+map['Floor']}))}
-    />
+    /> */}
 
     <div id="imageId" style={{ width:'100%',height:'100%'}} onClick={handleClick}>
       <img alt="map" src={url} style={{width:'100%'}}/>
