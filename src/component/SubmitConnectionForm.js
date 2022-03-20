@@ -32,12 +32,15 @@ class SubmitConnectionForm extends React.Component {
     let sourceLongitude= source.split(',')[1];
     let destinationLatitude= destination.split(',')[0];
     let destinationLongitude= destination.split(',')[1];
+    //fixme:fetch map
+    let mapId = 1;
     var details = {
       'sourceLatitude': parseFloat(sourceLatitude),
       'sourceLongitude':parseFloat(sourceLongitude),
       'destinationLatitude': parseFloat(destinationLatitude),
       'destinationLongitude':parseFloat(destinationLongitude),
-      'weight': 3
+      'weight': 3,
+      'mapId': 1
     };
 
     let formBody = [];
