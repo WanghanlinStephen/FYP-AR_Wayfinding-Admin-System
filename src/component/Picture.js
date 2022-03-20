@@ -3,7 +3,7 @@ import $ from 'jquery' ;
 import locationIcon from '../img/location.png';
 import locationIconNew from '../img/locationNew.png'
 import ControlBar from './ControlBar';
-import {Button} from "antd";
+import {Button , Select} from "antd";
 
 var labels = [];
 var connectionsMap = new Map();
@@ -12,7 +12,36 @@ function Picture(){
 
   //用setLabel来更新label，否侧无法实现页面状态更新
   const [label, setLabel] = useState([]);
+  const [url, setUrl] = useState('');
+  const [maps, setMaps] = useState([]);
   const [connectionMap, setConnectionMap] = useState(new Map());
+
+  function fetchInitialMaps(){
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/all`)
+    .then(res => res.json())
+    .then(data => {
+      let map = data['data']['Maps'];
+      setMaps(map);
+    })
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+    })
+  }
+
+  fetchInitialMaps();
+  fetchMaps(1);
+
+  function fetchMaps(value){
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter?id=${value}`)
+    .then(res => res.json())
+    .then(data => {
+      let link = data['data']['Map']['Url'];
+      setUrl(link);
+    })
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+    })
+  }
 
   function onFetchLabel() {
     fetchInitialLabels();
@@ -265,8 +294,20 @@ function Picture(){
       Fetch Previous Connections
     </Button>
 
+
+    <Select
+      showSearch
+      placeholder="Select a map"
+      optionFilterProp="children"
+      onChange={fetchMaps}
+      filterOption={(input, option) =>
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+      options={maps.map(map=>({ value: map['Id'], label: 'Floor '+map['Floor']}))}
+    />
+
     <div id="imageId" style={{ width:'100%',height:'100%'}} onClick={handleClick}>
-      <img alt="map" src="https://innowings.engg.hku.hk/content/uploads/2020/06/LG.png" style={{width:'100%'}}/>
+      <img alt="map" src={url} style={{width:'100%'}}/>
     </div>
     <div><ControlBar label={label} connection={connectionMap}/></div>
     </>

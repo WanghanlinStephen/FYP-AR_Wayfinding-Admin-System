@@ -2,11 +2,11 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './css/SubmitForm.css';
 import { Form, Input, Button, Select } from 'antd';
-import {ContainerFilled} from "@ant-design/icons";
 require('./Picture');
 
 //直接用{this.props.label}就可以了
 
+const { Option } = Select;
 const layout = {
   labelCol: {
     span: 8,
@@ -22,27 +22,17 @@ const tailLayout = {
   },
 };
 
-class SubmitNodeForm extends React.Component {
+class DeleteForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
-    let imgEl = document.getElementById("imageId");
-    let width = imgEl.offsetWidth
-    let height = imgEl.offsetHeight
-    let coordinate = values['labelID'];
-    coordinate = coordinate.substring(1,coordinate.length-1);
-    let latitude= coordinate.split(',')[0];
-    let longitude= coordinate.split(',')[1];
-    let relativeLatitude = parseInt(latitude, 10) / width
-    let relativeLongitude = parseInt(longitude, 10) / height
+    var node = values['nodeId'].substring(1,values['nodeId'].length-1);
+    let nodeLatitude= node.split(',')[0];
+    let nodeLongitude= node.split(',')[1];
+
     var details = {
-      'nameEnglish': values['nameEnglish'],
-      'nameChinese': values['nameChinese'],
-      'nameTraditionalChinese': values['nameChinese'],
-      'latitude':  relativeLatitude,
-      'longitude': relativeLongitude,
-      'intersectionalAngle':values['intersectionalAngle'],
+      'nodeLatitude': parseFloat(nodeLatitude),
+      'nodeLongitude':parseFloat(nodeLongitude),
     };
-    console.log(details);
 
     let formBody = [];
     for (let property in details) {
@@ -58,9 +48,7 @@ class SubmitNodeForm extends React.Component {
       body: formBody
     }
     // 数据库
-    // http://localhost:3000/v1/admin/add/node
-    // https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/node
-    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/node`, requestOptions)
+    fetch( `http://localhost:3000/v1/admin/delete/both`, requestOptions)
     .then(res => res.json())
     .then(data => {
       console.log("Success");
@@ -73,14 +61,22 @@ class SubmitNodeForm extends React.Component {
   onReset = () => {
     this.formRef.current.resetFields();
   };
+  onFill = () => {
+    this.formRef.current.setFieldsValue({
+      note: 'Hello world!',
+      gender: 'male',
+    });
+  };
+  labels=["1","2","3"];
+
 
 
   render() {
     return (
         <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
           <Form.Item
-              name="labelID"
-              label="labelID"
+              name="nodeId"
+              label="nodeId"
               rules={[
                 {
                   required: true,
@@ -89,47 +85,11 @@ class SubmitNodeForm extends React.Component {
           >
             <Select
                 placeholder="Select a option and change input text above"
-                id="labelID"
+                id="nodeId"
                 allowClear
                 options={this.props.label.map(a=>({ value: a, label: a}))}
             >
             </Select>
-          </Form.Item>
-          <Form.Item
-              label="nameEnglish"
-              name="nameEnglish"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your nameEnglish!',
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label="nameChinese"
-              name="nameChinese"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your nameChinese!',
-                },
-              ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-              label="intersectionalAngle"
-              name="intersectionalAngle"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your intersectionalAngle!',
-                },
-              ]}
-          >
-            <Input />
           </Form.Item>
           <Form.Item
               noStyle
@@ -163,4 +123,4 @@ class SubmitNodeForm extends React.Component {
     );
   }
 }
-export default SubmitNodeForm;
+export default DeleteForm;
