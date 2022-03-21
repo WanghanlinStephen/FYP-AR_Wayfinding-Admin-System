@@ -39,8 +39,8 @@ const steps = [
 const ControlBar = (props) => {
   const {label,connection} = props;
 
-  console.log(label);
-  console.log(connection);
+  // console.log(label);
+  // console.log(connection);
 
   const [current, setCurrent] = React.useState(0);
 
