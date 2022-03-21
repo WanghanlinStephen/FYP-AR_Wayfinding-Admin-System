@@ -37,7 +37,7 @@ const steps = [
 ];
 
 const ControlBar = (props) => {
-  const {label,connection} = props;
+  const {label,connection,mapId} = props;
 
   // console.log(label);
   // console.log(connection);

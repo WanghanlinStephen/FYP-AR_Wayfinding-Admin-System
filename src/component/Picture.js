@@ -13,6 +13,7 @@ function Picture(){
   //用setLabel来更新label，否侧无法实现页面状态更新
   const [label, setLabel] = useState([]);
   const [url, setUrl] = useState('');
+  const [mapId, setMapId] = useState(0);
   const [op1, setOp1] = useState([]);
   const [op2, setOp2] = useState([]);
   const [connectionMap, setConnectionMap] = useState(new Map());
@@ -36,13 +37,26 @@ function Picture(){
     .then(res => res.json())
     .then(data => {
       let maps = data['data']['Map'];
-      newOptions = maps.map(map=>({ value: map['Url'], label: 'Floor '+map['Floor']}))
+      newOptions = maps.map(map=>({ value: map['Id'], label: 'Floor '+map['Floor']}))
       setOp2(newOptions);
     })
     .catch((error) => {
       console.error("Error fetching data: ", error);
     })
 }
+
+  function onSelectChange(value){
+    setMapId(value);
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/id?id=${value}`)
+    .then(res => res.json())
+    .then(data => {
+      let link = data['data']['Map']['Url'];
+      setUrl(link);
+    })
+    .catch((error) => {
+      console.error("Error fetching data: ", error);
+    })
+  }
 
   function onFetchLabel() {
     fetchInitialLabels();
@@ -308,13 +322,13 @@ function Picture(){
     <Select
      placeholder="Select a floor"
      options={op2}
-     onChange={(value)=>{setUrl(value);}} 
+     onChange={onSelectChange} 
     />
 
     <div id="imageId" style={{ width:'100%',height:'100%'}} onClick={handleClick}>
       <img alt="map" src={url} style={{width:'100%'}}/>
     </div>
-    <div><ControlBar label={label} connection={connectionMap}/></div>
+    <div><ControlBar mapId={mapId} label={label} connection={connectionMap}/></div>
     </>
   )
 }
