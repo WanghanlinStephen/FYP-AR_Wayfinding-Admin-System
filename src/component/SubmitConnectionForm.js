@@ -26,21 +26,29 @@ class SubmitConnectionForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
     console.log(values);
+    let imgEl = document.getElementById("imageId");
+    let width = imgEl.offsetWidth
+    let height = imgEl.offsetHeight
     var source = values['source'].substring(1,values['source'].length-1);
     var destination = values['destination'].substring(1,values['destination'].length-1);
-    let sourceLatitude= source.split(',')[0];
-    let sourceLongitude= source.split(',')[1];
-    let destinationLatitude= destination.split(',')[0];
-    let destinationLongitude= destination.split(',')[1];
+    var weight = values['weight']
+    let sourceLatitude= source.split(',')[1];
+    let sourceLongitude= source.split(',')[0];
+    let relativeSourceLatitude = parseInt(sourceLatitude, 10) / height
+    let relativeSourceLongitude = parseInt(sourceLongitude, 10) / width
+    let destinationLatitude= destination.split(',')[1];
+    let destinationLongitude= destination.split(',')[0];
+    let relativeDestinationLatitude = parseInt(destinationLatitude, 10) / height
+    let relativeDestinationLongitude = parseInt(destinationLongitude, 10) / width
+
     //fixme:fetch map
-    let mapId = 1;
     var details = {
-      'sourceLatitude': parseFloat(sourceLatitude),
-      'sourceLongitude':parseFloat(sourceLongitude),
-      'destinationLatitude': parseFloat(destinationLatitude),
-      'destinationLongitude':parseFloat(destinationLongitude),
-      'weight': 3,
-      'mapId': 1
+      'sourceLatitude': parseFloat(relativeSourceLatitude).toPrecision(2),
+      'sourceLongitude':parseFloat(relativeSourceLongitude).toPrecision(2),
+      'destinationLatitude': parseFloat(relativeDestinationLatitude).toPrecision(2),
+      'destinationLongitude':parseFloat(relativeDestinationLongitude).toPrecision(2),
+      'weight': weight,
+      'mapId': this.props.mapId
     };
 
     let formBody = [];
@@ -133,6 +141,18 @@ class SubmitConnectionForm extends React.Component {
                 options={this.props.label.map(a=>({ value: a, label: a}))}
             >
             </Select>
+          </Form.Item>
+          <Form.Item
+              label="weight"
+              name="weight"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your weight!',
+                },
+              ]}
+          >
+            <Input />
           </Form.Item>
           <Form.Item
               noStyle

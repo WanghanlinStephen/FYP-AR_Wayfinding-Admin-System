@@ -68,6 +68,8 @@ class CreateQRCode extends React.Component {
     var QR = document.getElementById('QR');
     console.log(QR.size)
     QR.size=300
+    //  http://localhost:3000/home/1
+    //  https://fyp21043s1.cs.hku.hk:8443/home/1
     QR.value="https://fyp21043s1.cs.hku.hk:8443/home/1"
     console.log(QR.size)
     Container.append(QR)
@@ -146,6 +148,9 @@ class CreateQRCode extends React.Component {
           <Modal visible={this.state.isModalVisible} onOk={this.handleOk}>
           <QRCode
               id="QR"
+              //fixme:临时修改
+              //'https://fyp21043s1.cs.hku.hk:8443/home/'+this.state.labelID
+              //'http://localhost:3000/home/'+this.state.labelID
               value={'https://fyp21043s1.cs.hku.hk:8443/home/'+this.state.labelID} //link
               size={300} // 二维码的大小
               fgColor="#000000" // 二维码的颜色

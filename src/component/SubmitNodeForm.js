@@ -30,10 +30,12 @@ class SubmitNodeForm extends React.Component {
     let height = imgEl.offsetHeight
     let coordinate = values['labelID'];
     coordinate = coordinate.substring(1,coordinate.length-1);
-    let latitude= coordinate.split(',')[0];
-    let longitude= coordinate.split(',')[1];
-    let relativeLatitude = parseInt(latitude, 10) / width
-    let relativeLongitude = parseInt(longitude, 10) / height
+    let latitude= coordinate.split(',')[1];
+    let longitude= coordinate.split(',')[0];
+    let relativeLatitude = parseInt(latitude, 10) / height
+    let relativeLongitude = parseInt(longitude, 10) / width
+    console.log("relativeLatitude",relativeLatitude)
+    console.log("relativeLongitude",relativeLongitude)
     var details = {
       'nameEnglish': values['nameEnglish'],
       'nameChinese': values['nameChinese'],
@@ -78,16 +80,15 @@ class SubmitNodeForm extends React.Component {
       let height = imgEl.offsetHeight
       let coordinate = values['emergentEntryID'];
       coordinate = coordinate.substring(1,coordinate.length-1);
-      let latitude= coordinate.split(',')[0];
-      let longitude= coordinate.split(',')[1];
-      let relativeLatitude = parseInt(latitude, 10) / width
-      let relativeLongitude = parseInt(longitude, 10) / height
+      let longitude= coordinate.split(',')[0];
+      let latitude= coordinate.split(',')[1];
+      let relativeLatitude = parseInt(latitude, 10) / height
+      let relativeLongitude = parseInt(longitude, 10) / width
       //fixme:fetch mapId
-      let mapId = 1
       var details = {
           'latitude':  relativeLatitude.toPrecision(2),
           'longitude': relativeLongitude.toPrecision(2),
-          'mapId': mapId,
+          'mapId': this.props.mapId,
       };
       console.log(details);
       //fixme:send create emergent entry request
@@ -106,7 +107,7 @@ class SubmitNodeForm extends React.Component {
       }
 
       // 数据库
-      // http://localhost:8080/v1/admin/add/staircase
+      // http://localhost:3000/v1/admin/add/staircase
       // https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/staircase
       fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/add/staircase`, requestOptions)
           .then(res => res.json())

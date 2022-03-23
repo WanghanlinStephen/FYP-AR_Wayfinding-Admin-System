@@ -61,10 +61,10 @@ const ControlBar = (props) => {
         </Steps>
         <div className="steps-content">
           { current == 0 && (
-              <SubmitNodeForm label={label}/>
+              <SubmitNodeForm label={label} mapId={mapId}/>
           )}
           { current == 1 && (
-              <SubmitConnectionForm label={label}/>
+              <SubmitConnectionForm label={label} mapId={mapId}/>
           )}
           { current == 2 && (
               <DeleteNodeForm label={label}/>

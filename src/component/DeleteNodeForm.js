@@ -25,13 +25,18 @@ const tailLayout = {
 class DeleteNodeForm extends React.Component {
   formRef = React.createRef();
   onFinish = (values) => {
+    let imgEl = document.getElementById("imageId");
+    let width = imgEl.offsetWidth
+    let height = imgEl.offsetHeight
     var node = values['nodeId'].substring(1,values['nodeId'].length-1);
-    let nodeLatitude= node.split(',')[0];
-    let nodeLongitude= node.split(',')[1];
+    let nodeLatitude= node.split(',')[1];
+    let nodeLongitude= node.split(',')[0];
+    let relativeLatitude = parseInt(nodeLatitude, 10) / height
+    let relativeLongitude = parseInt(nodeLongitude, 10) / width
 
     var details = {
-      'nodeLatitude': parseFloat(nodeLatitude),
-      'nodeLongitude':parseFloat(nodeLongitude),
+      'nodeLatitude': parseFloat(relativeLatitude).toPrecision(2),
+      'nodeLongitude':parseFloat(relativeLongitude).toPrecision(2),
     };
 
     let formBody = [];
@@ -69,7 +74,6 @@ class DeleteNodeForm extends React.Component {
       gender: 'male',
     });
   };
-  labels=["1","2","3"];
 
 
 

@@ -19,6 +19,8 @@ function Picture(){
   const [connectionMap, setConnectionMap] = useState(new Map());
 
   function fetchInitialMaps(){
+    //http://localhost:3000/v1/admin/map/name
+    //https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/name
     fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/name`)
     .then(res => res.json())
     .then(data => {
@@ -33,6 +35,8 @@ function Picture(){
 
   function fetchFloor(value,option){
     let newOptions = [];
+    //https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/name?name=${option.label}
+    //http://localhost:3000/v1/admin/map/filter/name?name=${option.label}
     fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/name?name=${option.label}`)
     .then(res => res.json())
     .then(data => {
@@ -47,6 +51,8 @@ function Picture(){
 
   function onSelectChange(value){
     setMapId(value);
+    //https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/id?id=${value}
+    //https://localhost:3000/v1/admin/map/filter/id?id=${value}
     fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/map/filter/id?id=${value}`)
     .then(res => res.json())
     .then(data => {
@@ -64,17 +70,19 @@ function Picture(){
   }
   //initialize fetch
   function fetchInitialLabels(){
-    //http://localhost:3000/v1/api/nodes
-    //https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes
-    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes`)
+    //fixme:debug 修改为分级
+    //http://localhost:3000/v1/api/nodes/map?id=${mapId}
+    //https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes/map?id=${mapId}
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/nodes/map?id=${mapId}`)
     .then(res => res.json())
     .then(data => {
+      console.log("Data is ",data)
       let nodes = data['data']['Nodes'];
       for (let label in nodes){
         let imgEl = document.getElementById("imageId");
         let width = imgEl.offsetWidth
         let height = imgEl.offsetHeight
-        let imgSpot = {x: Math.floor(nodes[label].Latitude*width), y:Math.floor(nodes[label].Longitude*height)}
+        let imgSpot = {x: Math.floor(nodes[label].Longitude*width), y:Math.floor(nodes[label].Latitude*height)}
         drawInitialLabels(imgSpot,imgEl);
       }
     })
@@ -95,9 +103,9 @@ function Picture(){
   }
 
   function fetchInitialConnections() {
-    //https://fyp21043s1.cs.hku.hk:8080/v1/api/connections
-    //http://localhost:3000/v1/api/connections
-    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/connections`)
+    //https://fyp21043s1.cs.hku.hk:8080/v1/api/connections/map?id=${mapId}
+    //http://localhost:3000/v1/api/connections/map?id=${mapId}
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/api/connections/map?id=${mapId}`)
     .then(res => res.json())
     .then(data => {
 
@@ -128,13 +136,13 @@ function Picture(){
     let height = imgEl.offsetHeight
     if (firstPoint === null) {
       firstPoint = {};
-      firstPoint.xPoint = source['Latitude']*width+img_x;
-      firstPoint.YPoint = imgEl.offsetHeight-source['Longitude']*height+img_y;
+      firstPoint.xPoint = source['Longitude']*width+img_x;
+      firstPoint.YPoint = imgEl.offsetHeight-source['Latitude']*height+img_y;
     }
     if (secondPoint === null) {
       secondPoint = {};
-      secondPoint.xPoint = destination['Latitude']*width+img_x;
-      secondPoint.YPoint = imgEl.offsetHeight-destination['Longitude']*height+img_y;
+      secondPoint.xPoint = destination['Longitude']*width+img_x;
+      secondPoint.YPoint = imgEl.offsetHeight-destination['Latitude']*height+img_y;
     }
 
     if (firstPoint !== null && secondPoint !== null) {
