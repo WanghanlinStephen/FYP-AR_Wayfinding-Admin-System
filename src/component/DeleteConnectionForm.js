@@ -73,6 +73,41 @@ class DeleteConnectionForm extends React.Component {
       console.error("Error fetching data: ", error);
     })
   };
+  onSelect = (values) => {
+    //fixme:fetch mapId
+    var details = {
+      'Name': values['name'],
+      'Floor': parseInt(values['floor'],10),
+    };
+    console.log(details);
+    //fixme:send create emergent entry request
+    let formBody = [];
+    for (let property in details) {
+      let encodedKey = encodeURIComponent(property);
+      let encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    console.log(formBody);
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      body: formBody
+    }
+
+    // 数据库
+    // http://localhost:3000/v1/admin/delete/map https://localhost:8080/v1/admin/delete/map
+    // https://fyp21043s1.cs.hku.hk:8080/v1/admin/delete/map
+    fetch( `https://fyp21043s1.cs.hku.hk:8080/v1/admin/delete/map`, requestOptions)
+        .then(res => res.json())
+        .then(data => {
+          console.log("Success");
+          alert("Successfully Submit!")
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        })
+  };
   onReset = () => {
     this.formRef.current.resetFields();
   };
@@ -87,70 +122,131 @@ class DeleteConnectionForm extends React.Component {
 
   render() {
     return (
-        <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
-          <Form.Item
-              name="source"
-              label="Source"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Select
-                placeholder="Select a option and change input text above"
-                id="source"
-                allowClear
-                options={this.props.label.map(a=>({ value: a, label: a}))}
+        <div>
+          <h3>Delete Connection</h3>
+          <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
+            <Form.Item
+                name="source"
+                label="Source"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
             >
-            </Select>
-          </Form.Item>
-          <Form.Item
-              name="destination"
-              label="Destination"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Select
-                placeholder="Select a option and change input text above"
-                id="destination"
-                allowClear
-                options={this.props.label.map(a=>({ value: a, label: a}))}
+              <Select
+                  placeholder="Select a option and change input text above"
+                  id="source"
+                  allowClear
+                  options={this.props.label.map(a=>({ value: a, label: a}))}
+              >
+              </Select>
+            </Form.Item>
+            <Form.Item
+                name="destination"
+                label="Destination"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
             >
-            </Select>
-          </Form.Item>
-          <Form.Item
-              noStyle
-              shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
-          >
-            {({ getFieldValue }) =>
-                getFieldValue('gender') === 'other' ? (
-                    <Form.Item
-                        name="customizeGender"
-                        label="Customize Gender"
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                ) : null
-            }
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button htmlType="button" onClick={this.onReset}>
-              Reset
-            </Button>
-          </Form.Item>
-        </Form>
+              <Select
+                  placeholder="Select a option and change input text above"
+                  id="destination"
+                  allowClear
+                  options={this.props.label.map(a=>({ value: a, label: a}))}
+              >
+              </Select>
+            </Form.Item>
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
+            >
+              {({ getFieldValue }) =>
+                  getFieldValue('gender') === 'other' ? (
+                      <Form.Item
+                          name="customizeGender"
+                          label="Customize Gender"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                      >
+                        <Input />
+                      </Form.Item>
+                  ) : null
+              }
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Button htmlType="button" onClick={this.onReset}>
+                Reset
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <h3>Delete Map</h3>
+          <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onSelect}>
+            <Form.Item
+                label="name"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your building name!',
+                  },
+                ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+                label="floor"
+                name="floor"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your floor number!',
+                  },
+                ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
+            >
+              {({ getFieldValue }) =>
+                  getFieldValue('gender') === 'other' ? (
+                      <Form.Item
+                          name="customizeGender"
+                          label="Customize Gender"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                      >
+                        <Input />
+                      </Form.Item>
+                  ) : null
+              }
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Button htmlType="button" onClick={this.onReset}>
+                Reset
+              </Button>
+            </Form.Item>
+          </Form>
+
+        </div>
+
 
     );
   }

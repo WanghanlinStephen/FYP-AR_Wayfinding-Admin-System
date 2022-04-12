@@ -128,7 +128,7 @@ class SubmitNodeForm extends React.Component {
   render() {
     return (
         <div>
-            <h3>Create Node</h3>
+            <h3>Add Node</h3>
             <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
                 <Form.Item
                     name="labelID"

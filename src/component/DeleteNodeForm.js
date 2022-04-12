@@ -79,53 +79,57 @@ class DeleteNodeForm extends React.Component {
 
   render() {
     return (
-        <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
-          <Form.Item
-              name="nodeId"
-              label="nodeId"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-          >
-            <Select
-                placeholder="Select a option and change input text above"
-                id="nodeId"
-                allowClear
-                options={this.props.label.map(a=>({ value: a, label: a}))}
+        <div>
+          <h3>Delete Node</h3>
+          <Form {...layout} ref={this.formRef} name="control-ref" onFinish={this.onFinish}>
+            <Form.Item
+                name="nodeId"
+                label="nodeId"
+                rules={[
+                  {
+                    required: true,
+                  },
+                ]}
             >
-            </Select>
-          </Form.Item>
-          <Form.Item
-              noStyle
-              shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
-          >
-            {({ getFieldValue }) =>
-                getFieldValue('gender') === 'other' ? (
-                    <Form.Item
-                        name="customizeGender"
-                        label="Customize Gender"
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                ) : null
-            }
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Button htmlType="button" onClick={this.onReset}>
-              Reset
-            </Button>
-          </Form.Item>
-        </Form>
+              <Select
+                  placeholder="Select a option and change input text above"
+                  id="nodeId"
+                  allowClear
+                  options={this.props.label.map(a=>({ value: a, label: a}))}
+              >
+              </Select>
+            </Form.Item>
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
+            >
+              {({ getFieldValue }) =>
+                  getFieldValue('gender') === 'other' ? (
+                      <Form.Item
+                          name="customizeGender"
+                          label="Customize Gender"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                      >
+                        <Input />
+                      </Form.Item>
+                  ) : null
+              }
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+              <Button htmlType="button" onClick={this.onReset}>
+                Reset
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+
 
     );
   }
