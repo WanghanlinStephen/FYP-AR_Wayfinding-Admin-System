@@ -15,16 +15,6 @@ function App() {
           <Breadcrumb style={{ margin: '16px 0' }}>
           </Breadcrumb>
           <Layout className="site-layout-background" style={{ padding: '30px 0' }}>
-            <Sider className="site-layout-background" width={400}>
-              <Menu
-                  mode="inline"
-                  defaultSelectedKeys={['1']}
-                  defaultOpenKeys={['sub1']}
-                  style={{ height: '100%' }}
-              >
-                <ControlBar />
-              </Menu>
-            </Sider>
             <Content className="container" style={{ padding: '0 16px', minHeight: 280}}>
               <Picture />
             </Content>
