@@ -1,8 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+## How to Start
 
 In the project directory, you can run:
 
@@ -29,44 +25,50 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Instructions for usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Map Controller Bar 
+![image](./image/Map%20Controller%20Bar.png)
+    
+    Fetch Previous Labels:
+        Purpose:Fetch previous nodes stored in mysql database
+    Fetch Previous Connections:
+        Purpose:Fetch previous connections stored in mysql database
+    Selection Bar:
+        First Selection: building name
+        Second Selection: floor number
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### General Controller Bar
+#### - Stage One Add Node
+![image](./image/Add%20Node.png)
+    
+    LabelID:the label (X,Y) coordinates the user clicked on the map
+    NameEnglish,NameChinese: input corresponding name
+![image](./image/Intersectional%20Angle.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    IntersectionalAngle: refer to Angle 1 - Angle 2
+    Select Emergent ID: the label (X,Y) coordinates the user clicked on the map, then update the node as staircase
 
-## Learn More
+#### - Stage Two Add Connection 
+![image](./image/Add%20Connection.png)
+    
+    Source:the label (X,Y) coordinates the user clicked on the map
+    Destination:the label (X,Y) coordinates the user clicked on the map
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### - Stage Three Delete Node
+![image](./image/Delete%20Node.png)
+    
+    NodeId:the label (X,Y) coordinates the user clicked on the map
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### - Stage Four Delete Connection
 
-### Code Splitting
+    Source:the label (X,Y) coordinates the user clicked on the map
+    Destination:the label (X,Y) coordinates the user clicked on the map
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-
+#### - Stage Five Label Id
+    
+    LabelID:the label (X,Y) coordinates the user clicked on the map
+    Then QR will appear:
+![image](./image/QR%20code.png)
+    
